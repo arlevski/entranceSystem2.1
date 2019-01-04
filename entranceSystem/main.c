@@ -24,6 +24,7 @@ typedef struct S_User
     char code[8];    // user code
     int permissionStatus;   //user status
     struct S_User *next;
+    struct S_User *previous;
     
     //start time
     
@@ -36,12 +37,24 @@ void PrintList(User *start) {
     User *currentUser = start;
     int count = 0;
     
+    User *ahead = NULL;
+    User *behind = NULL;
+    
     while(currentUser != NULL) {
         count++;
-        printf("user:%d Name:%s Code:%s\n",count,
+        
+        ahead = currentUser->next;
+        behind = currentUser->previous;
+        
+        printf("%-20s %-8s \n",
                currentUser->name,
-               currentUser->code);
+               currentUser->code,
+               (ahead == NULL) ? "None" : ahead->name,
+               (behind == NULL) ? "None" : behind->name
+               );
         currentUser = currentUser->next;
+        ahead = NULL;
+        behind = NULL;
     }
     printf("Total Users:%d\n",count);
 }
@@ -55,25 +68,30 @@ User *AddUser(User *previous) {
     User *newUser = malloc(sizeof(User));
     sscanf(input, "%s %s", newUser->name, newUser->code);
     printf("Added:%s Code:%s\n\n",newUser->name, newUser->code);
+    
     newUser->next = NULL;
+    newUser->previous = NULL;
+    
     if(previous != NULL) {
         previous->next = newUser;
+        newUser->previous = previous;
     }
     
     return newUser;
 }
-
-void readAccess(char *path);
-/***
- * Handle function: get's the path of the access file, and print all users information.
- * You may change it according to your needs.
- ***/
-
-void getDateTime(int *day, int *month, int *year, int *hours, int *mins);
-/***
- * Handle function: Returns by referfance the current date and time
- ***/
-
+void CleanUp(User *start) {
+    
+    User *freeMe = start;
+    User *holdMe = NULL;
+    while(freeMe != NULL) {
+        holdMe = freeMe->next;
+        printf("Free Name:%s Speed:%s\n",
+               freeMe->name,
+               freeMe->code);
+        free(freeMe);
+        freeMe = holdMe;
+    }
+}
 
 
 void readAccess(char *path)
@@ -81,6 +99,7 @@ void readAccess(char *path)
     FILE *fp;
     int status, pulse;
     char temp[100], name[21], code[9], date_s[11], date_e[11], time_s[6], time_e[6];
+    
     
     fp = fopen( path, "r");
     if (!fp)
@@ -92,6 +111,7 @@ void readAccess(char *path)
     //header
     fgets(temp, 100, fp);
     puts(temp);
+    
     
     while (fscanf(fp, "%20s %8s %1d %10s %10s %5s %5s %5d", name, code, &status, date_s, date_e, time_s, time_e, &pulse) != EOF)
     {
@@ -156,7 +176,8 @@ int main(int argc, char *argv[]) {
         }
     }
     
-    //return 0;
+    CleanUp(start);
+    return 0;
     
 }
 
