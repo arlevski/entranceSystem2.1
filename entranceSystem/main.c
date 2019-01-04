@@ -66,7 +66,7 @@ User *AddUser(User *previous) {
     fgets( input, 15, stdin);
     
     User *newUser = malloc(sizeof(User));
-    sscanf(input, "%s %s", newUser->name, newUser->code);
+    sscanf(input, "%s %s \n", newUser->name, newUser->code);
     printf("Added:%s Code:%s\n\n",newUser->name, newUser->code);
     
     newUser->next = NULL;
@@ -85,7 +85,7 @@ void CleanUp(User *start) {
     User *holdMe = NULL;
     while(freeMe != NULL) {
         holdMe = freeMe->next;
-        printf("Free Name:%s Speed:%s\n",
+        printf("Free Name:%s Code:%s\n",
                freeMe->name,
                freeMe->code);
         free(freeMe);
@@ -93,6 +93,95 @@ void CleanUp(User *start) {
     }
 }
 
+User *ReadNextFromFile(User *start, FILE *pFile) {
+    size_t returnValue;
+    if(start == NULL) {
+        start = malloc(sizeof(User));
+        returnValue = fread(start, sizeof(User), 1, pFile);
+        start->next = NULL;
+        start->previous = NULL;
+    } else {
+        User *indexUser = start;
+        User *newUser = malloc(sizeof(User));
+        while(indexUser->next != NULL) {
+            indexUser = indexUser->next;
+        }
+        returnValue = fread(newUser, sizeof(User), 1, pFile);
+        indexUser->next = newUser;
+        newUser->next = NULL;
+        newUser->previous = indexUser;
+    }
+    return start;
+}
+
+User *ReadListIn(User *start) {
+    
+    FILE *pFile;
+    pFile = fopen("/Users/odedarlevski/Documents/Projects/entranceSystem/entranceSystem/test.txt", "r");
+    if(pFile != NULL) {
+        
+        CleanUp(start);
+        start = NULL;
+        
+        fseek(pFile, 0, SEEK_END);
+        long fileSize = ftell(pFile);
+        rewind(pFile);
+        
+        int numEntries = (int)(fileSize / (sizeof(User)));
+        printf("numEntries:%d\n",numEntries);
+        
+        int loop = 0;
+        for(loop = 0; loop < numEntries; ++loop) {
+            fseek(pFile, (sizeof(User) * loop), SEEK_SET);
+            start = ReadNextFromFile(start, pFile);
+        }
+    }  else {
+        printf("FILE OPEN ERROR FOR READ\n");
+    }
+    
+    return start;
+    
+}
+
+void WriteListToFile(User *start) {
+    FILE *pFile;
+    pFile = fopen("/Users/odedarlevski/Documents/Projects/entranceSystem/entranceSystem/test.txt", "w");
+    
+    if(pFile != NULL) {
+        User *currentUser = start;
+        
+        User *holdNext = NULL;
+        User *holdPrevious = NULL;
+        
+        while(currentUser != NULL) {
+            holdNext = currentUser->next;
+            holdPrevious = currentUser->previous;
+            
+            currentUser->next = NULL;
+            currentUser->previous = NULL;
+            
+            fseek(pFile, 0, SEEK_END);
+            fprintf(pFile, "%-20s %-8s \n",
+                    currentUser->name, currentUser->code);
+            //fwrite(currentUser, sizeof(User), 1, pFile);
+            
+            printf("Writing:%s to file\n",currentUser->name);
+            
+            currentUser->next = holdNext;
+            currentUser->previous = holdPrevious;
+            
+            holdNext = NULL;
+            holdPrevious = NULL;
+            
+            currentUser = currentUser->next;
+        }
+        fclose(pFile);
+        pFile = NULL;
+    } else {
+        printf("FILE OPEN ERROR\n");
+    }
+
+}
 
 void readAccess(char *path)
 {
@@ -116,6 +205,7 @@ void readAccess(char *path)
     while (fscanf(fp, "%20s %8s %1d %10s %10s %5s %5s %5d", name, code, &status, date_s, date_e, time_s, time_e, &pulse) != EOF)
     {
         printf("%-20s %-8s %-1d %-10s %-10s %-5s %-5s %-5d\n", name, code, status, date_s, date_e, time_s, time_e, pulse);
+        
     }
     
     fclose(fp);
@@ -166,6 +256,10 @@ int main(int argc, char *argv[]) {
             break;
         } else if ( strncmp(command, "print", 5) == 0) {
             PrintList(start);
+        } else if ( strncmp(command, "write", 5) == 0) {
+            WriteListToFile(start);
+        } else if ( strncmp(command, "read", 4) == 0) {
+            start = ReadListIn(start);
         } else if ( strncmp(command, "add", 3) == 0) {
             if(start == NULL) {
                 start = AddUser(NULL);

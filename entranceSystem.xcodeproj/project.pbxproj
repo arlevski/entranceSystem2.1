@@ -27,6 +27,7 @@
 		44290AF821D92F30007EBCD0 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		44290AFF21DA385F007EBCD0 /* access.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = access.txt; sourceTree = "<group>"; };
 		44290B0021DA390B007EBCD0 /* requests.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = requests.txt; sourceTree = "<group>"; };
+		449D20A421DFE71500ED06E9 /* test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = test.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +63,7 @@
 				44290B0021DA390B007EBCD0 /* requests.txt */,
 				44290AF821D92F30007EBCD0 /* main.c */,
 				44290AFF21DA385F007EBCD0 /* access.txt */,
+				449D20A421DFE71500ED06E9 /* test.txt */,
 			);
 			path = entranceSystem;
 			sourceTree = "<group>";
