@@ -33,6 +33,9 @@ typedef struct S_User
     
 } User;
 
+
+
+
 void PrintList(User *start) {
     User *currentUser = start;
     int count = 0;
@@ -121,7 +124,7 @@ User *ReadNextFromFile(User *start, FILE *pFile) {
     return start;
 }
 
-User *ReadListIn(User *previous) {
+User *ReadListIn() {
 
 //    FILE *pFile;
 //    pFile = fopen("/Users/odedarlevski/Documents/Projects/entranceSystem/entranceSystem/test.txt", "r");
@@ -148,56 +151,58 @@ User *ReadListIn(User *previous) {
     
     
     FILE *pFile;
-    pFile = fopen("/Users/odedarlevski/Documents/Projects/entranceSystem/entranceSystem/test.txt", "r");
+    pFile = fopen("/Users/odedarlevski/Documents/Projects/entranceSystem/entranceSystem/access.txt", "rb");
     
+    int line = 0;
+    //CleanUp(previous);
+    
+    char input[512];
+    User *currentUser;
+    User *temp;
+//    User myRecord;
+//    fread(&myRecord, sizeof(User), 1, pFile);
+//    printf("%s", myRecord.name);
     
     if(pFile != NULL) {
-        int line = 0;
-        CleanUp(previous);
         
-        char input[512];
-
+        fgets( input, 512, pFile );
         
+        currentUser = (User*)malloc(sizeof(User));
+        
+        sscanf(input, "%s %s %d %s %s %s %s \n", currentUser->name, currentUser->code, &currentUser->status, currentUser->date_s, currentUser->date_e, currentUser->time_s, currentUser->time_e);
+        printf("%d : Added:%s Code: %s Status: %d S Date: %s E Date: %s S Time: %s E Time: %s \n",line, currentUser->name,
+               currentUser->code,
+               currentUser->status, currentUser->date_s, currentUser->date_e,
+               currentUser->time_s, currentUser->time_e);
+        
+        temp = currentUser;
         
         while( fgets( input, 512, pFile )) {
             line++;
             
+            temp->next = malloc(sizeof(User));
+            temp = temp->next;
             
-            User *currentUser = malloc(sizeof(User));
-            
-            sscanf(input, "%s %s %d %s %s %s %s \n", currentUser->name, currentUser->code, &currentUser->status, currentUser->date_s, currentUser->date_e, currentUser->time_s, currentUser->time_e);
-            printf("Added:%s Code: %s Status: %d S Date: %s E Date: %s S Time: %s E Time: %s \n", currentUser->name, currentUser->code,
-                   currentUser->status, currentUser->date_s, currentUser->date_e,
-                   currentUser->time_s, currentUser->time_e);
-            
-            currentUser->next = NULL;
-            currentUser->previous = NULL;
-            
-            if(previous != NULL) {
-                previous->next = currentUser;
-                currentUser->previous = previous;
+            sscanf(input, "%s %s %d %s %s %s %s \n", temp->name, temp->code, &temp->status, temp->date_s, temp->date_e,
+                   temp->time_s, temp->time_e);
+            printf("%d : Added:%s Code: %s Status: %d S Date: %s E Date: %s S Time: %s E Time: %s \n",line, temp->name, temp->code, temp->status, temp->date_s, temp->date_e,
+                   temp->time_s, temp->time_e);
             }
-
+            temp->next = NULL;
+            fclose(pFile);
+        } else {
+            printf("FILE OPEN ERROR FOR READ\n");
         }
-        printf("Number of Users :%d\n",line);
-    } else {
-        printf("FILE OPEN ERROR FOR READ\n");
-    }
     
-    
-    
-    
-    
-    fclose(pFile);
-
-    return previous;
+    return currentUser;
 
 }
 
 void WriteListToFile(User *start) {
     FILE *pFile;
     pFile = fopen("/Users/odedarlevski/Documents/Projects/entranceSystem/entranceSystem/test.txt", "w");
-
+    
+    
     if(pFile != NULL) {
         User *currentUser = start;
 
@@ -258,8 +263,7 @@ void readAccess(char *path)
     while (fscanf(fp, "%20s %8s %1d %10s %10s %5s %5s", name, code, &status, date_s, date_e, time_s, time_e) != EOF)
     {
         printf("%-20s %-8s %-1d %-10s %-10s %-5s %-5s \n", name, code, status, date_s, date_e, time_s, time_e);
-        
-        
+      
     }
     
     fclose(fp);
@@ -310,7 +314,8 @@ int main(int argc, char *argv[]) {
         } else if ( strncmp(command, "write", 5) == 0) {
             WriteListToFile(start);
         } else if ( strncmp(command, "read", 4) == 0) {
-            start = ReadListIn(start);
+            start = ReadListIn();
+            
         } else if ( strncmp(command, "add", 3) == 0) {
             if(start == NULL) {
                 start = AddUser(NULL);

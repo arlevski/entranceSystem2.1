@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "entranceSystem/main.c"
-            timestampString = "568494087.2155401"
+            timestampString = "568500396.7407171"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "239"
-            endingLineNumber = "239"
+            startingLineNumber = "244"
+            endingLineNumber = "244"
             landmarkName = "readAccess"
             landmarkType = "9">
          </BreakpointContent>
