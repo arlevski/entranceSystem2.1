@@ -79,6 +79,8 @@ int main(int argc, char *argv[]) {
             
         }if ( strncmp( action, "print", 5) == 0) {
             printList(head);
+        }if ( strncmp( action, "write", 5) == 0) {
+            WriteListToFile(head);
         }else{
             printf("Input Not Valid.... \n");
         }
@@ -122,7 +124,7 @@ int main(int argc, char *argv[]) {
 //        }
 //    }
 //
-//    CleanUp(start);
+    CleanUp(head);
     return 0;
    
 }

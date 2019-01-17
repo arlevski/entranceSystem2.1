@@ -10,7 +10,7 @@
 #include <time.h>
 
 
-#define ACCESS_PATH "/Users/odedarlevski/Documents/Projects/entranceSystem/entranceSystem/access.txt"
+#define ACCESS_PATH "/Users/odedarlevski/Documents/Projects/entranceSystem/entranceSystem/test.txt"
 /***
  * This is the path where the access file is located.
  * When you submit the program make sure this path match to: "c:\\temp\\access.txt"
@@ -176,6 +176,65 @@ void printList(User *head){
     
     
     
+}
+
+void WriteListToFile(User *head) {
+    FILE *pFile;
+    pFile = fopen("/Users/odedarlevski/Documents/Projects/entranceSystem/entranceSystem/test.txt", "w");
+    
+    
+    if(pFile != NULL) {
+        User *current = head;
+        
+        User *holdNext = NULL;
+        //User *holdPrevious = NULL;
+        
+        while(current != NULL) {
+            holdNext = current->next;
+            //holdPrevious = current->previous;
+            
+            current->next = NULL;
+            //currentUser->previous = NULL;
+            
+            fseek(pFile, 0, SEEK_END);
+            //            fprintf(pFile, "%-20s %-8s \n",
+            //                    currentUser->name, currentUser->code);
+            fprintf(pFile, "%-20s %-8s %-1d %-10s %-10s %-5s %-5s \n", current->name, current->code, current->status, current->date_s, current->date_e,
+                    current->time_s, current->time_e);
+            //fwrite(currentUser, sizeof(User), 1, pFile);
+            
+            printf("Writing:%s to file\n",current->name);
+            
+            current->next = holdNext;
+           // currentUser->previous = holdPrevious;
+            
+            holdNext = NULL;
+           // holdPrevious = NULL;
+            
+            current = current->next;
+        }
+        fclose(pFile);
+        pFile = NULL;
+    } else {
+        printf("FILE OPEN ERROR\n");
+    }
+    
+}
+
+void CleanUp(User *head) {
+    
+    User *freeMe = head;
+    User *holdMe = NULL;
+    while(freeMe != NULL) {
+        holdMe = freeMe->next;
+        printf("Free Name:%s Code:%s\n",
+               freeMe->name,
+               freeMe->code);
+        free(freeMe);
+        freeMe = holdMe;
+    }
+    //Write to log.txt
+    //WriteToLog("Clean Up" , "Clean Up Completed");
 }
 
 
