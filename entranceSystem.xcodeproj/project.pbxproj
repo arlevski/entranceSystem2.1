@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		44290AF921D92F30007EBCD0 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 44290AF821D92F30007EBCD0 /* main.c */; };
+		4438612321E52C0600A5FA32 /* functions1.h in Sources */ = {isa = PBXBuildFile; fileRef = 4438612221E52C0600A5FA32 /* functions1.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,7 +28,10 @@
 		44290AF821D92F30007EBCD0 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		44290AFF21DA385F007EBCD0 /* access.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = access.txt; sourceTree = "<group>"; };
 		44290B0021DA390B007EBCD0 /* requests.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = requests.txt; sourceTree = "<group>"; };
+		4438612221E52C0600A5FA32 /* functions1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = functions1.h; sourceTree = "<group>"; };
 		449D20A421DFE71500ED06E9 /* test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = test.txt; sourceTree = "<group>"; };
+		44AC37AD21E9FC570027D060 /* functions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = functions.h; sourceTree = "<group>"; };
+		44D2805821E3F81600BA7018 /* log.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = log.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,8 +64,11 @@
 		44290AF721D92F30007EBCD0 /* entranceSystem */ = {
 			isa = PBXGroup;
 			children = (
-				44290B0021DA390B007EBCD0 /* requests.txt */,
+				44AC37AD21E9FC570027D060 /* functions.h */,
 				44290AF821D92F30007EBCD0 /* main.c */,
+				44D2805821E3F81600BA7018 /* log.txt */,
+				44290B0021DA390B007EBCD0 /* requests.txt */,
+				4438612221E52C0600A5FA32 /* functions1.h */,
 				44290AFF21DA385F007EBCD0 /* access.txt */,
 				449D20A421DFE71500ED06E9 /* test.txt */,
 			);
@@ -125,6 +132,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				44290AF921D92F30007EBCD0 /* main.c in Sources */,
+				4438612321E52C0600A5FA32 /* functions1.h in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
