@@ -128,7 +128,7 @@ User *addUser(User * head, char *name, char *code, int status, char *date_s, cha
     User *current = head;
     User *newUser;
     User *temp;
-    int swapped = 0;
+    int added = 0;
    
     newUser = (User*)malloc(sizeof(User));
     strcpy(newUser->name, name);
@@ -139,32 +139,47 @@ User *addUser(User * head, char *name, char *code, int status, char *date_s, cha
     strcpy(newUser->time_s, time_s);
     strcpy(newUser->time_e, time_e);
     
-    while (swapped == 0) {
+    while (added == 0) {
        
-        if (strcmp(current->code, code) > 0) {
-            
-            printf("%s code is %s need to come After the new user %s code(%s) \n", current->name, current->code, name, code );
-            
-            if (current == head) {
-               
-                newUser->previous = NULL;
-                newUser->next = current;
-                current->previous = newUser;
-                head = newUser;
-            }else{
-                temp = current;
-                newUser->previous = current->previous;
-                newUser->next = current;
-                newUser->previous->next = newUser;
+        
+            if (strcmp(current->code, code) > 0) {
                 
-                current->previous = newUser;
+                printf("%s code is %s need to come After the new user %s code(%s) \n", current->name, current->code, name, code );
+                
+                if (current == head) { // if new user code is bigger than the first user in the list
+                   
+                    newUser->previous = NULL;
+                    newUser->next = current;
+                    current->previous = newUser;
+                    head = newUser;
+                }
+                else if (!current){ // if new user code is the smallest in the list
+                  
+                    
+                }
+                else{
+                    temp = current;
+                    newUser->previous = current->previous;
+                    newUser->next = current;
+                    newUser->previous->next = newUser;
+                    
+                    current->previous = newUser;
+                }
+                printf("new user: %s has been added, after: %s , before: %s \n", newUser->name,
+                       newUser->previous->name, newUser->next->name);
+                added = 1;
+            }else{
+                if(current->next){
+                    current = current->next;
+                }else{
+                    newUser->previous = current;
+                    newUser->next = NULL;
+                    current->next = newUser;
+                    added = 1;
+                }
+                
             }
-            printf("new user: %s has been added, after: %s , before: %s \n", newUser->name,
-                   newUser->previous->name, newUser->next->name);
-            swapped = 1;
-        }else{
-            current = current->next;
-        }
+        
         
     }
     return head;
