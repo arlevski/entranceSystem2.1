@@ -13,3 +13,31 @@ Log Name: Print List ---- Log Description: Print users list ---  12/01/2019, 11:
 Log Name: Print List ---- Log Description: Print users list ---  12/01/2019, 11:46
 Log Name: Clean Up ---- Log Description: Clean Up Completed ---  12/01/2019, 11:47
 Log Name: Clean Up ---- Log Description: Clean Up Completed ---  12/01/2019, 11:48
+Log Name: User Added ---- Log Description: A User has been added ---  17/01/2019, 17:57
+Log Name: User Added ---- Log Description: A User has been added ---  17/01/2019, 17:57
+Log Name: User Added ---- Log Description: A User has been added ---  17/01/2019, 17:57
+Log Name: User Added ---- Log Description: A User has been added ---  17/01/2019, 17:57
+Log Name: User Added ---- Log Description: A User has been added ---  17/01/2019, 17:57
+Log Name: User Added ---- Log Description: A User has been added ---  17/01/2019, 17:57
+Log Name: User Added ---- Log Description: A User has been added ---  17/01/2019, 17:57
+Log Name: User Added ---- Log Description: A User has been added ---  17/01/2019, 17:57
+Action: User Added ----  Description: A User has been added ---  17/01/2019, 17:59
+Action: User Added ----  Description: A User has been added ---  17/01/2019, 17:59
+Action: User Added ----  Description: A User has been added ---  17/01/2019, 17:59
+Action: User Added ----  Description: A User has been added ---  17/01/2019, 17:59
+Action: User Added ----  Description: A User has been added ---  17/01/2019, 17:59
+Action: User Added ----  Description: A User has been added ---  17/01/2019, 17:59
+Action: User Added ----  Description: A User has been added ---  17/01/2019, 17:59
+Action: User Added ----  Description: A User has been added ---  17/01/2019, 17:59
+Action: User Added ----  Description: A User has been added ---  17/01/2019, 18:00
+Action: Print List ----  Description: Print users list ---  17/01/2019, 18:00
+Action: User Added ----  Description: A User has been added ---  17/01/2019, 18:02
+Action: User Added ----  Description: A User has been added ---  17/01/2019, 18:02
+Action: User Added ----  Description: A User has been added ---  17/01/2019, 18:02
+Action: User Added ----  Description: A User has been added ---  17/01/2019, 18:02
+Action: User Added ----  Description: A User has been added ---  17/01/2019, 18:02
+Action: User Added ----  Description: A User has been added ---  17/01/2019, 18:02
+Action: User Added ----  Description: A User has been added ---  17/01/2019, 18:02
+Action: User Added ----  Description: A User has been added ---  17/01/2019, 18:02
+Action: Print List ----  Description: Print users list ---  17/01/2019, 18:02
+Action: Database Update ----  Description: The database has been updated ---  17/01/2019, 18:03

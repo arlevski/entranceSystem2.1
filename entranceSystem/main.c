@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
             printf("\n\nBreaking...\n");
             break;
         }
-        if ( strncmp( action, "add", 3) == 0){
+        else if ( strncmp( action, "add", 3) == 0){
             
             printf("Add User Details: \n");
             
@@ -77,10 +77,12 @@ int main(int argc, char *argv[]) {
             
            
             
-        }if ( strncmp( action, "print", 5) == 0) {
+        }else if ( strncmp( action, "print", 5) == 0) {
             printList(head);
-        }if ( strncmp( action, "write", 5) == 0) {
+        }else if ( strncmp( action, "write", 5) == 0) {
             WriteListToFile(head);
+        }else if ( strncmp( action, "sort", 4) == 0) {
+            head = bubbleSort(head);
         }else{
             printf("Input Not Valid.... \n");
         }
