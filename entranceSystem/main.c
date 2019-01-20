@@ -1,163 +1,170 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <time.h>
+//  Created by Oded Arlevski ID - 203462270
 
-#define ACCESS_PATH "/Users/odedarlevski/Documents/Projects/entranceSystem/entranceSystem/access.txt"
-/***
- * This is the path where the access file is located.
- * When you submit the program make sure this path match to: "c:\\temp\\access.txt"
- ***/
-
-#define LOG_PATH "log.txt"
-/***
- * This is the path where the log file is located.
- * Open this file and append new records into it.
- * When you submit the program make sure this path match to: "c:\\temp\\log.txt"
- ***/
-
-
-typedef struct S_User
-{
-    char name[20]; // user name
-    char code[8];    // user code
-    int permissionStatus;   //user status
-    struct S_User *next;
-    
-    //start time
-    
-    //end time
-    
-    //pulse
-} User;
-
-void PrintList(User *start) {
-    User *currentUser = start;
-    int count = 0;
-    
-    while(currentUser != NULL) {
-        count++;
-        printf("user:%d Name:%s Code:%s\n",count,
-               currentUser->name,
-               currentUser->code);
-        currentUser = currentUser->next;
-    }
-    printf("Total Users:%d\n",count);
-}
-
-User *AddUser(User *previous) {
-    
-    printf("Enter Name And Code: ");
-    char input[16];
-    fgets( input, 15, stdin);
-    
-    User *newUser = malloc(sizeof(User));
-    sscanf(input, "%s %s", newUser->name, newUser->code);
-    printf("Added:%s Code:%s\n\n",newUser->name, newUser->code);
-    newUser->next = NULL;
-    if(previous != NULL) {
-        previous->next = newUser;
-    }
-    
-    return newUser;
-}
-
-void readAccess(char *path);
-/***
- * Handle function: get's the path of the access file, and print all users information.
- * You may change it according to your needs.
- ***/
-
-void getDateTime(int *day, int *month, int *year, int *hours, int *mins);
-/***
- * Handle function: Returns by referfance the current date and time
- ***/
-
-
-
-void readAccess(char *path)
-{
-    FILE *fp;
-    int status, pulse;
-    char temp[100], name[21], code[9], date_s[11], date_e[11], time_s[6], time_e[6];
-    
-    fp = fopen( path, "r");
-    if (!fp)
-    {
-        printf("File not found!\n");
-        return;
-    }
-    
-    //header
-    fgets(temp, 100, fp);
-    puts(temp);
-    
-    while (fscanf(fp, "%20s %8s %1d %10s %10s %5s %5s %5d", name, code, &status, date_s, date_e, time_s, time_e, &pulse) != EOF)
-    {
-        printf("%-20s %-8s %-1d %-10s %-10s %-5s %-5s %-5d\n", name, code, status, date_s, date_e, time_s, time_e, pulse);
-    }
-    
-    fclose(fp);
-    return;
-}
-
-
-void getDateTime(int *day, int *month, int *year, int *hours, int *mins)
-{
-    time_t rawtime;
-    struct tm *timeinfo;
-    
-    time(&rawtime);
-    timeinfo = localtime( &rawtime);
-    
-    *day = timeinfo->tm_mday;
-    *month = timeinfo->tm_mon + 1;
-    *year = timeinfo->tm_year + 1900;
-    *hours = timeinfo->tm_hour;
-    *mins = timeinfo->tm_min;
-}
-
-
-
-
-
-
+#include "functions.h"
 
 
 int main(int argc, char *argv[]) {
     
-    readAccess(ACCESS_PATH);
+    
+    char action[10];
+    char name[21];          // user name
+    char code[8];           // user code
+    //char statusChar = '\0';
+    int status = 0;             // user status
+    char date_s[11];        // Start date
+    char date_e[11];        // End date
+    char time_s[6];         // start time
+    char time_e[6];         //end time
 
-    char command[16];
-    char input[16];
     
-    User *start = NULL;
-    User *newest = NULL;
+    User *head = NULL;
+    User *current = NULL;
     
+    head = readAccess(ACCESS_PATH, head);
     
-    printf("Please type 'add', 'print' or 'quit'\n");
-    while( fgets( input, 15, stdin) ) {
+    printf("\n\n\n------Welcome to 'Oded Enterprises' entrance system------\n\n\n");
+    do  {
         
-        sscanf(input,"%s",command);
-        
-        if ( strncmp(command, "quit", 4) == 0) {
+        printf("Please Choose Your Action: \n-add \n-print \n-search \n-update \n-quit \nType One of the Above: ");
+        scanf("%s", action);
+    
+        if ( strncmp( action, "quit", 4) == 0) {
             printf("\n\nBreaking...\n");
             break;
-        } else if ( strncmp(command, "print", 5) == 0) {
-            PrintList(start);
-        } else if ( strncmp(command, "add", 3) == 0) {
-            if(start == NULL) {
-                start = AddUser(NULL);
-                newest = start;
-            } else {
-                newest = AddUser(newest);
-            }
         }
-    }
+        if ( strncmp( action, "add", 3) == 0){
+            
+            printf("Add User Details: \n");
+            
+            printf("Name:");
+            scanf("%s", name);
+            
+            printf("Access Code: ");
+            scanf("%s", code);
+            
+            
+            printf("Permission Status: ");
+            scanf("%d", &status);
+           
+            printf("Start Date: ");
+            scanf("%s", date_s);
+
+            printf("End Date: ");
+            scanf("%s", date_e);
+
+            printf("Start Time: ");
+            scanf("%s", time_s);
+
+            printf("End Time: ");
+            scanf("%s", time_e);
+            
+            head = addUser(head, name, code, status, date_s, date_e, time_s, time_e);
+            
+            
+        }
+        if ( strncmp( action, "print", 5) == 0) {
+            printList(head);
+        }
+        if ( strncmp( action, "search", 6) == 0) {
+            
+            do {
+                
+                printf("By Which Parameter You Want To Search? \n-name \n-status \n-quit \nType One of the Above: ");
+                scanf("%s", action);
+                if ( strncmp( action, "name", 4) == 0) {
+                    printf("Choose name : \n");
+                    scanf("%s", name);
+                    searchUserByName(head, name);
+                    
+                }
+                if ( strncmp( action, "status", 6) == 0) {
+                    printf("Type status from 1 to 5: \n");
+                    scanf("%d", &status);
+                    searchUserByStatus(head,status);
+                    
+                }
+                if ( strncmp( action, "quit", 4) == 0) {
+                    break;
+                }
+
+            }while (1);
+            
+        }
+        if ( strncmp( action, "update", 6) == 0) {
+            
+            do {
+                printList(head);
+                printf("Choose name from the list above or type 'quit' to go back: \n");
+                scanf("%s", name);
+                if ( strncmp( name, "quit", 4) == 0) {
+                    break;
+                }
+                current = searchUserByName(head, name);
+                printf("Please choose which parameter you want to change: \n-status\n-hours \n-dates \n-quit \nType One of the Above:  ");
+                scanf("%s", action);
+                if ( strncmp( action, "status", 4) == 0) {
+//                    printList(head);
+//                    printf("Choose name from the list above: \n");
+//                    scanf("%s", name);
+//                    current = searchUserByName(head, name);
+                    printf("Choose new status (1-5): \n");
+                    scanf("%d", &status);
+                    current->status = status;
+                    printf("------User's status has been updated:------ \n");
+                    searchUserByName(head, name);
+                    printf("------------\n\n\n\n");
+                }
+                if ( strncmp( action, "hours", 6) == 0) {
+//                    printList(head);
+//                    printf("Choose name from the list above: \n");
+//                    scanf("%s", name);
+//                    current = searchUserByName(head, name);
+                    printf("New start time: ");
+                    scanf("%s", time_s);
+                    printf("New end time: ");
+                    scanf("%s", time_e);
+                    strcpy(current->time_s, time_s);
+                    strcpy(current->time_e, time_e);
+                    printf("------User's entry hours has been updated:------ \n");
+                    searchUserByName(head, name);
+                    printf("------------\n\n\n\n");
+                    
+                }
+                if ( strncmp( action, "dates", 6) == 0) {
+//                    printList(head);
+//                    printf("Choose name from the list above: \n");
+//                    scanf("%s", name);
+//                    current = searchUserByName(head, name);
+                    printf("New start date: ");
+                    scanf("%s", date_s);
+                    printf("New end date: ");
+                    scanf("%s", date_e);
+                    strcpy(current->date_s, date_s);
+                    strcpy(current->date_e, date_e);
+                    printf("------User's entry dates has been updated:------ \n");
+                    searchUserByName(head, name);
+                    printf("------------\n\n\n\n");
+                    
+                }
+                if ( strncmp( action, "quit", 4) == 0) {
+                    break;
+                }
+                WriteListToFile(head);
+                
+            }while (1);
+        }
+//        else{
+//            printf("Input Not Valid.... \n");
+//        }
+        
     
-    //return 0;
+    }while (1);
     
+    
+    
+    CleanUp(head);
+    return 0;
+   
 }
 
 
